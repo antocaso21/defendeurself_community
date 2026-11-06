@@ -1,0 +1,30 @@
+DEFENDEURSELF — FORUM AUTONOMO
+================================
+Questo progetto e' SOLO il forum DefendEUrself. E' un SECONDO SITO WEB,
+separato dal sito istituzionale www.defendeurself.eu.
+
+IMPORTANTE:
+GitHub salva il codice, ma da solo NON ospita un forum con registrazioni,
+post e database tramite GitHub Pages. Serve un host Python come Railway.
+
+COME USARE IL REPOSITORY GITHUB CHE HAI GIA' CREATO
+1. Sostituisci i file omonimi di questo pacchetto nel tuo repository.
+   Tutti i file sono volutamente al livello principale, COME NEL TUO SCREENSHOT.
+2. Collega il repository a Railway e crea un servizio con deploy da GitHub.
+3. In Railway -> Variables imposta:
+   FORUM_SECRET_KEY = una stringa lunga, casuale e privata
+   FORUM_SECURE_COOKIES = 1
+   FORUM_ADMIN_USERNAME = un nome utente moderatore (3-24 caratteri)
+   FORUM_ADMIN_PASSWORD = una password casuale di almeno 12 caratteri
+   FORUM_DB = /app/data/forum.sqlite3
+4. Aggiungi un volume persistente montato su /app/data.
+   E' ESSENZIALE per non perdere utenti e discussioni ai redeploy.
+5. Genera il dominio pubblico HTTPS nel pannello Railway.
+   QUELLO e' l'indirizzo del sito/forum indipendente.
+
+NON caricare sul sito principale DefendEUrself i file di questo archivio.
+NON aprire README.md aspettandoti di vedere il forum: e' documentazione.
+
+Nota: il forum e' un MVP con moderazione e login, non una piattaforma
+pubblica certificata. Prima del lancio pubblico servono privacy policy,
+backup, responsabilita' di moderazione e verifica di sicurezza.

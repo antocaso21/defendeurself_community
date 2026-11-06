@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ thread.title }}{% endblock %}
+{% block body %}<div class="container topic-layout"><a class="back" href="{{ base_path }}/?category={{ thread.category_slug }}">← Back to discussions</a>
+<article class="topic-card"><div class="thread-category">{{ thread.category_icon }} {{ thread.category_title }}</div><h1>{{ thread.title }}</h1>
+<div class="topic-meta">Posted by <strong>{{ thread.username }}</strong> · {{ thread.created_at[:10] }}</div>
+{% if thread.is_hidden %}<div class="error">This discussion is hidden from the public.</div>{% endif %}
+<div class="post-body">{{ thread.body }}</div>
+<div class="post-actions">
+{% if user %}<details class="report-control"><summary>Report this discussion</summary><form method="post" action="{{ base_path }}/report"><input type="hidden" name="csrf" value="{{ csrf }}"><input type="hidden" name="thread_id" value="{{ thread.id }}"><label for="reason-thread">Reason</label><select id="reason-thread" name="reason" required><option>Suspected scam</option><option>Personal data exposed</option><option>Harassment</option><option>Spam</option><option>Other</option></select><button class="btn btn-small" type="submit">Send report</button></form></details>{% endif %}
+{% if user and user.role=='admin' %}<form method="post" action="{{ base_path }}/moderation/thread/{{ thread.id }}"><input type="hidden" name="csrf" value="{{ csrf }}"><input type="hidden" name="action" value="{% if thread.is_hidden %}show{% else %}hide{% endif %}"><button class="btn btn-small" type="submit">{% if thread.is_hidden %}Show discussion{% else %}Hide discussion{% endif %}</button></form>{% endif %}
+</div></article>
+<div id="replies" class="replies"><h2>Replies <span>{{ replies|length }}</span></h2>
+{% for r in replies %}<article class="reply-card"><div class="reply-heading"><span class="avatar">{{ r.username[0]|upper }}</span><div><strong>{{ r.username }}</strong><small>{{ r.created_at[:10] }}</small></div></div>
+{% if r.is_hidden %}<div class="error">Hidden reply — visible only to moderators.</div>{% endif %}
+<div class="post-body">{{ r.body }}</div>
+<div class="post-actions">
+{% if user %}<details class="report-control"><summary>Report reply</summary><form method="post" action="{{ base_path }}/report"><input type="hidden" name="csrf" value="{{ csrf }}"><input type="hidden" name="reply_id" value="{{ r.id }}"><label for="reason-{{ r.id }}">Reason</label><select id="reason-{{ r.id }}" name="reason"><option>Suspected scam</option><option>Personal data exposed</option><option>Harassment</option><option>Spam</option><option>Other</option></select><button class="btn btn-small" type="submit">Send report</button></form></details>{% endif %}
+{% if user and user.role=='admin' %}<form method="post" action="{{ base_path }}/moderation/reply/{{ r.id }}"><input type="hidden" name="csrf" value="{{ csrf }}"><input type="hidden" name="action" value="{% if r.is_hidden %}show{% else %}hide{% endif %}"><button class="btn btn-small" type="submit">{% if r.is_hidden %}Show reply{% else %}Hide reply{% endif %}</button></form>{% endif %}
+</div></article>{% else %}<p class="empty-inline">No replies yet. Your contribution could help someone else.</p>{% endfor %}
+</div>
+<section class="reply-form"><h2>Join this discussion</h2>{% if user %}<form method="post" action="{{ base_path }}/topic/{{ thread.id }}/reply"><input type="hidden" name="csrf" value="{{ csrf }}"><label for="reply">Your reply</label><textarea id="reply" name="body" required minlength="2" maxlength="3000" rows="6" placeholder="Share a helpful, respectful response..." ></textarea><p class="field-hint">Please do not share personal data.</p><button class="btn btn-blue" type="submit">Post reply</button></form>
+{% else %}<p>To protect the community, only registered members can reply.</p><a class="btn btn-blue" href="{{ base_path }}/login">Log in to reply</a> <a class="btn btn-outline-dark" href="{{ base_path }}/register">Create account</a>{% endif %}
+</section></div>{% endblock %}

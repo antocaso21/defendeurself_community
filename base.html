@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#2033a8">
+  <meta name="description" content="DefendEUrself Community: learn, share, and ask questions about online safety in a supportive environment.">
+  <title>{% block title %}Community Forum{% endblock %} | DefendEUrself</title>
+  <link rel="stylesheet" href="{{ base_path }}/static/styles.css">
+  <script src="{{ base_path }}/static/main.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="wordmark" href="{{ base_path }}/" aria-label="DefendEUrself Forum home"><span class="shield" aria-hidden="true">✓</span>Defend<span class="eu">EU</span>rself<span class="mark-sub">Community</span></a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="{{ site_url }}">Project website</a>
+      <a href="{{ base_path }}/">Discussions</a>
+      <a href="{{ base_path }}/guidelines">Guidelines</a>
+      {% if user %}
+        {% if user.role == 'admin' %}<a href="{{ base_path }}/moderation">Moderation</a>{% endif %}
+        <a href="{{ base_path }}/account">{{ user.username }}</a>
+        <form action="{{ base_path }}/logout" method="post" class="inline"><input type="hidden" name="csrf" value="{{ csrf }}"><button class="link-button" type="submit">Log out</button></form>
+      {% else %}
+        <a href="{{ base_path }}/login">Log in</a><a class="nav-join" href="{{ base_path }}/register">Join the forum</a>
+      {% endif %}
+    </nav>
+    <button class="contrast-toggle" data-contrast aria-label="Toggle high contrast" title="High contrast">◐</button>
+    <button class="text-toggle" data-text-size aria-label="Increase text size" title="Larger text">A+</button>
+  </div>
+</header>
+<main id="main">
+{% if notice %}
+  <div class="container"><div class="notice" role="status">
+  {% if notice=='welcome' %}Welcome to the community! You can now start a discussion.
+  {% elif notice=='posted' %}Your discussion has been published.
+  {% elif notice=='replied' %}Your reply has been added.
+  {% elif notice=='reported' %}Thank you. A moderator can review your report.
+  {% elif notice=='loggedin' %}You are logged in.
+  {% elif notice=='deleted' %}Your account and contributions have been deleted.
+  {% elif notice=='moderated' %}Moderation action saved.
+  {% endif %}
+  </div></div>
+{% endif %}
+{% block body %}{% endblock %}
+</main>
+<footer class="footer"><div class="container footer-wrap">
+  <div><strong>Defend<span class="eu">EU</span>rself Community</strong><p>Digital autonomy, not digital fear. A welcoming space to learn safer habits online.</p></div>
+  <div><a href="{{ base_path }}/guidelines">Community rules & privacy</a><a href="{{ site_url }}">Project website</a><small>Erasmus+ 2025-1-BE01-KA220-ADU-000350280</small></div>
+  <div class="funding"><div class="eu-flag">★ ★ ★<br>★ EU ★<br>★ ★ ★</div><span>Co-funded by the European Union</span></div>
+</div></footer>
+</body>
+</html>

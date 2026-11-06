@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Safe online, together{% endblock %}
+{% block body %}
+<section class="hero"><div class="container hero-grid">
+  <div><div class="eyebrow">ERASMUS+ · DIGITAL INCLUSION</div><h1>Safer online.<br><span>Together.</span></h1>
+  <p>Ask questions, share experiences and practise cybersecurity skills with the DefendEUrself learning community. No question is too small.</p>
+  <div class="hero-actions"><a class="btn btn-yellow" href="{{ base_path }}/new">Start a discussion <span aria-hidden="true">→</span></a><a class="btn btn-outline" href="{{ base_path }}/guidelines">How it works</a></div></div>
+  <div class="hero-art" aria-label="Illustration of a secure digital learning community"><div class="big-shield">✓</div><div class="bubble b-one">Is this message safe? <b>💬</b></div><div class="bubble b-two">Let's learn together <b>🌱</b></div><div class="bubble b-three">Privacy matters <b>🔒</b></div></div>
+</div></section>
+<div class="container content-layout">
+  <aside class="sidebar"><div class="aside-title">Explore topics</div><a class="cat-link {% if not category %}selected{% endif %}" href="{{ base_path }}/">🌍 <span>All discussions</span></a>
+    {% for c in categories %}<a class="cat-link {% if category==c.slug %}selected{% endif %}" href="{{ base_path }}/?category={{ c.slug }}"><span aria-hidden="true">{{ c.icon }}</span><span>{{ c.title }}</span><small>{{ c.count }}</small></a>{% endfor %}
+    <div class="aside-help"><strong>Stay safe</strong><p>Never post passwords, account numbers, addresses or personal documents.</p><a href="{{ base_path }}/guidelines">Read the guidelines →</a></div>
+  </aside>
+  <section class="discussion-list" aria-labelledby="discussions-title">
+    <div class="section-heading"><div><div class="eyebrow dark">OUR COMMUNITY</div><h2 id="discussions-title">Community discussions</h2><p>Real questions, practical answers and shared learning.</p></div>
+      <a class="btn btn-blue" href="{{ base_path }}/new">+ New discussion</a>
+    </div>
+    <form class="search-tools" method="get" action="{{ base_path }}/">
+       <label class="visually-hidden" for="search">Search discussions</label><input id="search" name="q" value="{{ q }}" maxlength="100" placeholder="Search topics, questions and tips...">
+       {% if category %}<input type="hidden" name="category" value="{{ category }}">{% endif %}
+       <label class="visually-hidden" for="sort">Sort topics</label><select id="sort" name="sort"><option value="active" {% if sort!='newest' %}selected{% endif %}>Recently active</option><option value="newest" {% if sort=='newest' %}selected{% endif %}>Newest first</option></select>
+       <button class="btn btn-blue" type="submit">Search</button>
+    </form>
+    {% if threads %}
+      <div class="threads">
+      {% for t in threads %}<article class="thread-row">
+        <div class="thread-icon" aria-hidden="true">{{ t.category_icon }}</div><div class="thread-main"><div class="thread-category">{{ t.category_title }}</div>
+        <h3><a href="{{ base_path }}/topic/{{ t.id }}">{{ t.title }}</a></h3><p>{{ t.body[:180] }}{% if t.body|length > 180 %}…{% endif %}</p>
+        <div class="thread-meta">By {{ t.username }} · {{ t.updated_at[:10] }}</div></div>
+        <div class="reply-number"><b>{{ t.reply_count }}</b><small>replies</small></div>
+      </article>{% endfor %}</div>
+    {% else %}
+      <div class="empty"><div class="empty-icon">💬</div><h3>No discussions here yet</h3><p>{% if q %}Try another search, or create the first discussion on this topic.{% else %}This community is ready for its first conversation. Be the one to start it!{% endif %}</p><a href="{{ base_path }}/new" class="btn btn-blue">Start a discussion</a></div>
+    {% endif %}
+  </section>
+</div>
+<section class="info-strip"><div class="container"><strong>Research → Learn → Practise → Connect</strong><p>Part of DefendEUrself, an Erasmus+ project advancing accessible cybersecurity education for adults aged 45 and above.</p></div></section>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}New discussion{% endblock %}
+{% block body %}<div class="container page-top"><a class="back" href="{{ base_path }}/">← All discussions</a></div>
+<section class="form-area slim"><div class="form-card"><div class="eyebrow dark">START A CONVERSATION</div><h1>Ask the community</h1><p>A good question can help many people learn. Describe the situation without sharing private details.</p>
+{% if error %}<div class="error" role="alert">{{ error }}</div>{% endif %}
+<form action="{{ base_path }}/new" method="post"><input type="hidden" name="csrf" value="{{ csrf }}">
+<label for="category">Discussion category</label><select name="category_id" id="category" required>{% for c in categories %}<option value="{{ c.id }}">{{ c.icon }} {{ c.title }}</option>{% endfor %}</select>
+<label for="title">Your question or topic</label><input name="title" id="title" required minlength="6" maxlength="140" placeholder="e.g. How can I recognise a phishing email?">
+<label for="body">Message</label><textarea name="body" id="body" required minlength="15" maxlength="5000" rows="8" placeholder="Tell us what you would like to learn or discuss. Please do not share passwords or personal information."></textarea>
+<p class="field-hint">Please do not include private documents, phone numbers, account numbers or passwords.</p>
+<button class="btn btn-blue wide" type="submit">Publish discussion</button></form></div></section>{% endblock %}

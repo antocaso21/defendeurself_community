@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}My account{% endblock %}
+{% block body %}<section class="container standalone reading"><div class="eyebrow dark">MY COMMUNITY</div><h1>Your account</h1><p>You are signed in as <strong>{{ user.username }}</strong>. You can ask questions and reply to discussions.</p><h2>Delete your account</h2><p>Deleting your account permanently removes your posts, replies and reports from the forum database. This action cannot be undone.</p>
+{% if error %}<div class="error" role="alert">{{ error }}</div>{% endif %}
+<form method="post" action="{{ base_path }}/account/delete" class="delete-form" data-confirm-delete><input type="hidden" name="csrf" value="{{ csrf }}"><label for="password">Confirm your password</label><input id="password" name="password" type="password" required autocomplete="current-password"><button class="btn btn-danger" type="submit">Delete account and contributions</button></form>
+</section>{% endblock %}
